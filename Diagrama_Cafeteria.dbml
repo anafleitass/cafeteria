@@ -1,0 +1,127 @@
+Table Empleados {
+	emp_cod integer [ pk, increment, not null, unique ]
+	emp_nombre varchar [ not null ]
+	emp_apellido varchar [ not null ]
+	emp_telefono varchar [ not null ]
+	car_cod integer [ not null ]
+	ciu_cod integer
+}
+
+Table Cargos {
+	car_cod integer [ pk, increment, not null, unique ]
+	car_cargo varchar [ not null ]
+}
+
+Table Desayunos {
+	des_cod integer [ pk, increment, not null, unique ]
+	des_nombre varchar [ not null ]
+	des_descripcion varchar [ not null ]
+	des_precio integer
+	pro_cod integer
+}
+
+Table Clientes {
+	cli_cod integer [ pk, increment, not null, unique ]
+	cli_nombre varchar [ not null ]
+	cli_apelllido varchar [ not null ]
+	cli_telefono integer
+	ciu_cod integer
+}
+
+Table ATC {
+	atc_cod integer [ pk, increment, not null, unique ]
+	emp_cod integer [ not null ]
+	suc_cod integer
+}
+
+Table Sucursales {
+	suc_cod integer [ pk, increment, not null, unique ]
+	ciu_cod integer [ not null ]
+	emp_cod integer
+}
+
+Table Productos {
+	pro_cod integer [ pk, increment, not null, unique ]
+	pro_nombre varchar [ not null ]
+	pro_cantidad integer [ not null ]
+	pro_vencimiento date
+}
+
+Table Menú {
+	men_cod integer [ pk, increment, not null, unique ]
+	des_cod integer [ not null ]
+	men_disponible boolean [ not null ]
+}
+
+Table Ciudades {
+	ciu_cod integer [ pk, increment, not null, unique ]
+	ciu_nombre varchar
+}
+
+Table Pedidos {
+	ped_cod integer [ pk, not null ]
+	cli_cod integer [ increment, not null, unique ]
+	men_cod integer [ not null ]
+	atc_cod integer [ not null ]
+}
+
+Table Registro Pedido {
+	reg_cod integer [ pk, increment, not null, unique ]
+	ped_cod integer [ not null ]
+	fec_ped date [ not null ]
+}
+
+Table Informes {
+	inf_cod integer [ pk, increment, not null, unique ]
+	inf_mensajes text [ not null ]
+	inf_fechaenvio date [ not null ]
+	ped_cod integer [ not null ]
+}
+
+Ref fk_Empleados_car_cod_cargos {
+	Empleados.car_cod - Cargos.car_cod [ delete: no action, update: no action ]
+}
+
+Ref fk_ATC_emp_cod_Empleados {
+	ATC.emp_cod < Empleados.emp_cod [ delete: restrict, update: cascade ]
+}
+
+Ref fk_Desayunos_pro_cod_Productos {
+	Desayunos.pro_cod < Productos.pro_cod [ delete: restrict, update: cascade ]
+}
+
+Ref fk_Menú_des_cod_Desayunos {
+	Menú.des_cod < Desayunos.des_cod [ delete: restrict, update: cascade ]
+}
+
+Ref fk_ATC_suc_cod_Sucursales {
+	ATC.suc_cod - Sucursales.suc_cod [ delete: no action, update: no action ]
+}
+
+Ref fk_Sucursales_emp_cod_Empleados {
+	Sucursales.emp_cod < Empleados.emp_cod [ delete: restrict, update: cascade ]
+}
+
+Ref fk_Ciudades_ciu_cod_Clientes {
+	Ciudades.ciu_cod < Clientes.ciu_cod [ delete: restrict, update: cascade ]
+}
+
+Ref fk_Registro Pedido_ped_cod_Pedidos {
+	Registro Pedido.ped_cod < Pedidos.ped_cod [ delete: restrict, update: cascade ]
+}
+
+Ref fk_Clientes_cli_cod_Pedidos {
+	Clientes.cli_cod < Pedidos.cli_cod [ delete: restrict, update: cascade ]
+}
+
+Ref fk_Pedidos_men_cod_Menú {
+	Pedidos.men_cod < Menú.men_cod [ delete: restrict, update: cascade ]
+}
+
+Ref fk_Pedidos_ped_cod_Informes {
+	Pedidos.ped_cod < Informes.ped_cod [ delete: restrict, update: cascade ]
+}
+
+Ref fk_Ciudades_ciu_cod_Empleados {
+	Ciudades.ciu_cod < Empleados.ciu_cod [ delete: restrict, update: cascade ]
+}
